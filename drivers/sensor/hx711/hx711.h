@@ -11,10 +11,12 @@
 extern "C" {
 #endif
 
+#include <zephyr/devicetree.h>
 #include <zephyr/device.h>
 #include <zephyr/kernel.h>
 #include <zephyr/drivers/sensor.h>
 #include <zephyr/drivers/gpio.h>
+#include "hx711_compat.h"
 
 #ifdef CONFIG_HX711_ENABLE_MEDIAN_FILTER
 #include "filters/median.h"
@@ -86,9 +88,12 @@ struct hx711_config {
 	const struct device *sck_ctrl;
 	gpio_dt_flags_t sck_flags;
 
+#if DT_ANY_COMPAT_HAS_PROP_STATUS_OKAY(HX711_DT_DRV_COMPAT, rate_gpios)
+	bool has_rate;
 	gpio_pin_t rate_pin;
 	const struct device *rate_ctrl;
 	gpio_dt_flags_t rate_flags;
+#endif
 };
 
 /**
