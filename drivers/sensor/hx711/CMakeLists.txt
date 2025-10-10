@@ -2,4 +2,7 @@
 
 zephyr_library()
 zephyr_library_sources_ifdef(CONFIG_HX711 hx711.c)
-add_subdirectory_ifdef(CONFIG_HX711 filters)
+
+if(CONFIG_HX711 AND (CONFIG_HX711_ENABLE_MEDIAN_FILTER OR CONFIG_HX711_ENABLE_EMA_FILTER))
+  add_subdirectory(filters)
+endif()
